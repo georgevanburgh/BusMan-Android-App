@@ -11,10 +11,7 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
 public class MapPane extends Activity implements LocationListener {
-	long timeLastUpdated = 0;
-	final long UPDATE_INTERVAL = 2000;
-	final long MAX_UPDATE_INTERVAL = 20000;
-	String lastUpdatedProviderType = "";
+
 	private GoogleMap map;
 	private LocationManager locationManager;
 	private static final long MIN_TIME = 400;
