@@ -1,5 +1,6 @@
 package com.intrivix.android.busman.adapter;
 
+import java.text.DecimalFormat;
 import java.util.Vector;
 
 import android.content.Context;
@@ -75,7 +76,8 @@ public class RouteOptionsAdapter extends BaseAdapter {
 	
 	private String getPriceFormat(float price) {
 		
-		String str = "£" + new DecimalFormat("#.##").format(price);
+		String str = "£%.2f";
+		;
 		
 		return "";
 	}
