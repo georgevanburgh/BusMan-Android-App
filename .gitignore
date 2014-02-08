@@ -3,5 +3,7 @@ bin/
 gen/
 .classpath
 .project
+.properties
+proguard-project.txt
 
 *.class
