@@ -3,6 +3,7 @@ package com.intrivix.android.busman.screen;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.intrivix.android.busman.MapPane;
 import com.intrivix.android.busman.R;
 import com.intrivix.android.busman.adapter.RouteOptionsAdapter;
 import com.intrivix.android.busman.model.Route;
@@ -57,11 +59,13 @@ public class RouteMap extends Activity {
         
         mRouteOptionsListView = (ListView) findViewById(R.id.route_options_list);
         mRouteOptionsListView.setDividerHeight(0);
+        mRouteOptionsListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mRouteOptionsListView.setAdapter(mRouteOptionsAdapter);
         mRouteOptionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
             	//TODO do something special when this item is clicked...
+            	//mRouteOptionsListView.setSelection(pos);
             }
         });
         
@@ -82,6 +86,11 @@ public class RouteMap extends Activity {
         case R.id.action_settings:
             // TODO launch the settings activity..
             return true;
+        case android.R.id.home:
+            Intent intent = new Intent(RouteMap.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        	return true;
         default:
             return super.onOptionsItemSelected(item);
         }
