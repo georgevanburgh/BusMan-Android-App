@@ -1,21 +1,24 @@
 package com.intrivix.android.busman.screen;
 
-import com.intrivix.android.busman.MapPane;
-import com.intrivix.android.busman.R;
-import com.intrivix.android.busman.R.array;
-import com.intrivix.android.busman.R.drawable;
-import com.intrivix.android.busman.R.id;
-import com.intrivix.android.busman.R.layout;
-import com.intrivix.android.busman.R.menu;
-import com.intrivix.android.busman.R.string;
+import java.util.ArrayList;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -32,6 +35,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.intrivix.android.busman.MapPane;
+import com.intrivix.android.busman.R;
+import com.intrivix.android.busman.network.APITask;
+
 public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -42,6 +49,8 @@ public class MainActivity extends Activity {
     private String[] mDrawerItems;
     
     private int mCurrentFragment = -1;
+
+    ProgressDialog progress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -196,10 +205,11 @@ public class MainActivity extends Activity {
 
         private Button mNavigateButton;
         private EditText mToAddress, mFromAddress;
-
-        public HomeFragment() {
+        
+        
+        public HomeFragment(){
             // Empty constructor required for fragment subclasses
-        }
+    	}
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -226,12 +236,64 @@ public class MainActivity extends Activity {
                 					"To Address: " + toAddress
                 					+ ", From Address: " + fromAddress,
                 					Toast.LENGTH_SHORT).show();
+                	
+                	ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+                	pairs.add(new BasicNameValuePair("start", "m144aq"));
+                	pairs.add(new BasicNameValuePair("dest", "m145rl"));
+                	String getReqAddon = APITask.buildGetParameters(pairs);
+                	
+					APITask.callApi(APITask.GET_ROUTE_URL+getReqAddon, "", APITask.REQUEST_GET,
+								((MainActivity) HomeFragment.this.getActivity()).getRouteResultHandler);
             	}
             });
             
             
             return rootView;
         }
+    }
+    
+    private Handler getRouteResultHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            System.out.println("GET ROUTE API RESULT: " + msg.obj);
+            if(msg == null || msg.obj == null){
+				MainActivity.showError(MainActivity.this);
+				if(progress != null) progress.dismiss();
+				return;
+            }
+            try {
+				JSONObject object = new JSONObject((String) msg.obj);
+				
+				if(object.has("status") && object.get("status").equals("succeded")) {
+					
+				} else { 
+					//TODO there was an error....
+					MainActivity.showError(MainActivity.this);
+				}
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			if(progress != null) progress.dismiss();
+        }
+    };
+    
+
+    
+    public static void showError(Context context) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle("Unexpected Error")
+	       .setMessage("An unexpected error occurred. Sorry.")
+		   .setCancelable(true)
+		.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int id) {
+				//do nothing 
+			}
+		  });
+		AlertDialog dialog = builder.create();
+		dialog.show();
     }
 
 }
