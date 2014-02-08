@@ -1,7 +1,6 @@
 package com.intrivix.android.busman.adapter;
 
-import java.text.DecimalFormat;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,19 +14,19 @@ import com.intrivix.android.busman.model.Route;
 
 public class RouteOptionsAdapter extends BaseAdapter {
 	
-	private Vector<Route> mRoutes;
+	private ArrayList<Route> mRoutes;
 	
 	private Context mContext;
 	private LayoutInflater mLayoutInflater;
 	
-	public RouteOptionsAdapter(Vector<Route> routes, Context context) {
+	public RouteOptionsAdapter(ArrayList<Route> routes, Context context) {
 		//TODO some needed setup
 		mRoutes = routes;
 		mContext = context;
 	    mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public void setRoute(Vector<Route> newRoutes) {
+	public void setRoute(ArrayList<Route> newRoutes) {
 		mRoutes = newRoutes;
 	}
 
@@ -58,7 +57,7 @@ public class RouteOptionsAdapter extends BaseAdapter {
 		name.setText(thisRoute.getRouteName());
 
 		TextView price = (TextView) convertView.findViewById(R.id.price_text);
-		price.setText(thisRoute.getPrice() < 0 ? "" : thisRoute.getPrice()+"");
+		price.setText(thisRoute.getPrice() < 0 ? "" : getPriceFormat(thisRoute.getPrice()));
 		
 		TextView eta = (TextView) convertView.findViewById(R.id.eta_text);
 		eta.setText(getETAString(thisRoute.getETA()));
@@ -76,10 +75,8 @@ public class RouteOptionsAdapter extends BaseAdapter {
 	
 	private String getPriceFormat(float price) {
 		
-		String str = "£%.2f";
-		;
+		return String.format("£%.2f", price);
 		
-		return "";
 	}
 
 }

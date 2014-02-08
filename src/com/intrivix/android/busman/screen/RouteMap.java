@@ -1,6 +1,6 @@
 package com.intrivix.android.busman.screen;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -41,7 +41,7 @@ public class RouteMap extends Activity {
 			}
         });
         
-        Vector<Route> routes = new Vector<Route>();
+        ArrayList<Route> routes = new ArrayList<Route>();
         Route r = new Route("Route 1", 10);
         routes.add(r);
         r = new Route("Bus", 20);
