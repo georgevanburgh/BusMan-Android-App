@@ -9,7 +9,6 @@ import android.os.Bundle;
 
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import com.google.android.gms.maps.model.CameraPosition.Builder;
 
 public class MapPane extends Activity implements LocationListener {
 	long timeLastUpdated = 0;
@@ -26,23 +25,26 @@ public class MapPane extends Activity implements LocationListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+				.getMap();
 
-	    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		locationManager.requestLocationUpdates(
+				LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
 
 		map.setMyLocationEnabled(true);
 		map.setTrafficEnabled(true);
-		
 
 	}
 
 	@Override
 	public void onLocationChanged(Location location) {
-		LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-	    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
-	    map.animateCamera(cameraUpdate);
-	    locationManager.removeUpdates(this);
+		LatLng latLng = new LatLng(location.getLatitude(),
+				location.getLongitude());
+		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,
+				14);
+		map.animateCamera(cameraUpdate);
+		locationManager.removeUpdates(this);
 	}
 
 	@Override
