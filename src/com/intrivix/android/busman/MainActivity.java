@@ -3,6 +3,8 @@ package com.intrivix.android.busman;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.SearchManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -105,6 +107,11 @@ public class MainActivity extends Activity {
             intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
             startActivity(intent);
             */
+            return true;
+        case R.id.action_map_pane:
+        	//For Richard's testing...
+            Intent intent = new Intent(MainActivity.this, MapPane.class);
+            startActivity(intent);
             return true;
         default:
             return super.onOptionsItemSelected(item);
