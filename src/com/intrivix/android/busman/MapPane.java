@@ -31,6 +31,7 @@ public class MapPane extends Activity implements LocationListener {
 
 		map.setMyLocationEnabled(true);
 		map.setTrafficEnabled(true);
+		map.setBuildingsEnabled(true);
 
 	}
 
