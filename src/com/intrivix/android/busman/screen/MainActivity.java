@@ -1,4 +1,13 @@
-package com.intrivix.android.busman;
+package com.intrivix.android.busman.screen;
+
+import com.intrivix.android.busman.MapPane;
+import com.intrivix.android.busman.R;
+import com.intrivix.android.busman.R.array;
+import com.intrivix.android.busman.R.drawable;
+import com.intrivix.android.busman.R.id;
+import com.intrivix.android.busman.R.layout;
+import com.intrivix.android.busman.R.menu;
+import com.intrivix.android.busman.R.string;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -131,6 +140,13 @@ public class MainActivity extends Activity {
             mDrawerLayout.closeDrawer(mDrawerList);
     		return;
     	}
+    	
+    	if(position == 1) {
+            Intent intent = new Intent(MainActivity.this, RouteMap.class);
+            startActivity(intent);
+    		return;
+    	}
+    	
         // update the main content by replacing fragments
         Fragment fragment = new HomeFragment();
         //Bundle args = new Bundle();

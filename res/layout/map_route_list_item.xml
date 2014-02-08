@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/route_item_height"
+    android:orientation="horizontal"
+    android:background="@drawable/grey_box"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/route_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="Walking"
+            android:textSize="@dimen/route_list_text_size" />
+
+        <TextView
+            android:id="@+id/price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="£2.20"
+            android:textSize="@dimen/route_list_text_size" />
+
+        <TextView
+            android:id="@+id/eta_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="30m"
+            android:textSize="@dimen/route_list_text_size" />
+    </LinearLayout>
+
+</LinearLayout>
