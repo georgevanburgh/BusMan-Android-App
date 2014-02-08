@@ -1,14 +1,10 @@
 package com.intrivix.android.busman;
 
-import java.util.Locale;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.SearchManager;
-import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,6 +29,8 @@ public class MainActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mDrawerItems;
+    
+    private int mCurrentFragment = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,7 @@ public class MainActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
+        
 	}
 
 	@Override
@@ -119,18 +120,23 @@ public class MainActivity extends Activity {
     }
 
     private void selectItem(int position) {
+    	if(mCurrentFragment == position) {
+            mDrawerLayout.closeDrawer(mDrawerList);
+    		return;
+    	}
         // update the main content by replacing fragments
         Fragment fragment = new HomeFragment();
         //Bundle args = new Bundle();
         //args.putInt(HomeFragment.ARG_PLANET_NUMBER, position);
         //fragment.setArguments(args);
+        
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
-        //setTitle(mDrawerItems[position]);
+        mCurrentFragment = position;
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
@@ -164,7 +170,9 @@ public class MainActivity extends Activity {
      * Fragment that appears in the "content_frame", shows a planet
      */
     public static class HomeFragment extends Fragment {
-        public static final String ARG_PLANET_NUMBER = "planet_number";
+
+        private Button mNavigateButton;
+        private EditText mToAddress, mFromAddress;
 
         public HomeFragment() {
             // Empty constructor required for fragment subclasses
@@ -174,6 +182,31 @@ public class MainActivity extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+            
+            mToAddress = (EditText) rootView.findViewById(R.id.toAddress);
+            mFromAddress = (EditText) rootView.findViewById(R.id.fromAddress);
+            
+            mNavigateButton = (Button) rootView.findViewById(R.id.navigateButton);
+            mNavigateButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                	//For now, just create a Toast message with the input data
+                	//TODO to send an API request to do the navigation...
+                	
+                	String toAddress = mToAddress.getText().toString();
+                	String fromAddress = mFromAddress.getText().toString();
+                	if(fromAddress.isEmpty()) {
+                		//TODO grab the device's current location...
+                	}
+                	
+                	Toast.makeText(HomeFragment.this.getActivity(),
+                					"To Address: " + toAddress
+                					+ ", From Address: " + fromAddress,
+                					Toast.LENGTH_SHORT).show();
+            	}
+            });
+            
+            
             return rootView;
         }
     }

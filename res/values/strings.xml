@@ -5,6 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="drawer_close">Open Side Menu</string>
     <string name="drawer_open">Close Side Menu</string>
+    <string name="to_address">To Address</string>
+    <string name="from_address">From Address</string>
+    <string name="go_button">Go</string>
     
     
     <string-array name="draw_menu_items">
