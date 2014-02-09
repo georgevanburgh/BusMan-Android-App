@@ -58,9 +58,10 @@ public class MapPane extends Activity implements LocationListener {
 		JSONObject jObject;
 
 		try {
-			theString = getInternetData();
-			jObject = new JSONObject(theString);
-			theString = jObject.getJSONObject("points").toString();
+			
+			System.out.println(getInternetData());
+			//jObject = new JSONObject(theString);
+			//theString = jObject.getJSONObject("points").toString();
 		
 		} catch (IOException e) {
 			System.out.println(e);
