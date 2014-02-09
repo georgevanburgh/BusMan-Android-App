@@ -56,7 +56,7 @@ public class MapPane extends Activity implements LocationListener {
 	private static final long MIN_TIME = 400;
 	private static final float MIN_DISTANCE = 1000;
 	private final static String LINE = "m|brFl{~aQo_Hac@qw@hOklFjlJybGtwI{}BtdLmxQph`@}sCbd@utCf~BmnCn}C}_DbhIs~BffIw|ErbI_nJxzKgaFffAwiF~}E}}QpzIywGhsAufMxyHsdNbyS}bIbeG_fAvvAkeE~OioI_iAmoLe^ijLLwyIrf@g_Kd{A_eDdz@oaEkq@etItAmyEjB{w@fz@}{@j{@eEl|Dkl@hnD_iCrb@kqAsbBqb@ewBihCgVkkIxiEo~TkG{_FfNgoCh`BgcGzQmnEznGezDhsFyuF`mEu|Hb~@aoFgCqjFdh@ujFhkEagBxdB{oHzQwePt]onO|aKarTjuKexHxj@ceKj}H{kPzcL{|DnWeoEj_AivEteBcj@l~BsMtvGqFjsBy|AzmBeyDxl@wrGxaH}tKp~O}dDhwHofA|lAi|CzDipDf`FwiHjlJk`\\vO_wp@jDwgy@_LgqIksAahJqx@miJ~i@srGjTkeQe@siG_PecDe_C{fVlCyybAkAkjSmI_oYzd@}oEbj@ycHl}F{vO|hKoyNdaUisH|gLklLpH}lo@|Dsnd@mt@keHitGw~DgyAwiPBo{TaKmcKw_FgjLanIofFi}DwbD}Lm|HoBydHymD{iSsFkea@eFeqm@_V{rIzQe{EucAkwHfD}yHvo@mfUnq@exYFsyFnnBuxEzwDycLz_Iu`TzfF_eQb|F_dHxy@k|E~uC}pHbp@mjCviBy{IqD_{M~mBuuAuz@ssDkDa_^uQcxS|MewB`m@_gDvAckFxa@gxJqCk|Cf}CmrJf|HmvBvCkeCjgC{j]mN_tb@z]iuWmr@ifHi]krFjJkgJhiAapCfR{jCb_BiiFluBobFoQkgDdCmiGjuBwqD~{@elEyD_cC}vAwy@_f@_pAlu@yxG~vAw_MtkGwv@tdAkuRt_CudCp`BmdFvn@u`EfdAqvBsZikCse@u~LarLq_HwlDopBw`B}pCc}C}lFcwEnn@sbCKkyW@qtE_r@}kCi`FPbCyaY`Eif^gk@wb@sbCha@yz@oMoyEgiCqfC}eCfzEieP`C{|_@|j@cqYkk@yh[rd@qnIbm@{{_@bG}p]zlCelFMezG{t@}vUoFqbJyt@mvBgaHguUg}Ac{Je|AuwAs`A}tAyd@e{E_f@yeRlqAojOtu@ayXrc@amDaCayErBooJaO_yIa}AuzGcbBqsD_kBmRa_Aa~@}d@{eDgRepAoa@mHa|@viA~n@~bFep@hdFqVdqMexAbuEk`A~z@{HzgAflA|xDpIf_B}f@t{@y@`P";
-	private String theString = null;
+	private String sillyGoogleString = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class MapPane extends Activity implements LocationListener {
 		
 		
 		
-		System.out.println(theString);
+		//System.out.println(theString);
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
 
@@ -101,8 +101,8 @@ public class MapPane extends Activity implements LocationListener {
 		map.setMyLocationEnabled(true);
 		map.setTrafficEnabled(true);
 		map.setBuildingsEnabled(true);
-
-		//List<LatLng> decodedPath = PolyUtil.decode(theString);
+		
+		//List<LatLng> decodedPath = PolyUtil.decode(sillyGoogleString);
 
 		//map.addPolyline(new PolylineOptions().addAll(decodedPath).color(
 			//	Color.BLUE));
@@ -191,8 +191,8 @@ public class MapPane extends Activity implements LocationListener {
 				JSONArray array = object.getJSONArray("routes");
 				
 				JSONObject o_polyLine = array.getJSONObject(array.length()-1).getJSONObject("overview_polyline");
-				String sillyGoogleString = o_polyLine.getString("points");
-				
+				sillyGoogleString = o_polyLine.getString("points");
+				System.out.println("im near silly gooolge");
 				System.out.println(sillyGoogleString);
 				
 
