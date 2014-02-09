@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +28,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -35,6 +39,9 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
+import com.intrivix.android.busman.network.APITask;
+import com.intrivix.android.busman.screen.MainActivity;
+import com.intrivix.android.busman.screen.MainActivity.HomeFragment;
 
 public class MapPane extends Activity implements LocationListener {
 
@@ -57,7 +64,7 @@ public class MapPane extends Activity implements LocationListener {
 		setContentView(R.layout.activity_map);
 		JSONObject jObject;
 
-		try {
+		/*try {
 			
 			System.out.println(getInternetData());
 			//jObject = new JSONObject(theString);
@@ -68,7 +75,21 @@ public class MapPane extends Activity implements LocationListener {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+		
+
+    	ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+    	pairs.add(new BasicNameValuePair("origin", "39.833193,-94.862794"));
+    	pairs.add(new BasicNameValuePair("destination", "49.833193,-94.862794"));
+    	pairs.add(new BasicNameValuePair("sensor", "true"));
+    	String getReqAddon = APITask.buildGetParameters(pairs);
+    	
+		APITask.callApi(APITask.GET_ROUTE_URL+getReqAddon, "", APITask.REQUEST_GET,
+					getSillyGoogleStringHandler);
+		
+		
+		
+		
 		System.out.println(theString);
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
@@ -118,7 +139,7 @@ public class MapPane extends Activity implements LocationListener {
 
 	}
 
-	public String getInternetData() throws Exception {
+	/*public String getInternetData() throws Exception {
 
 		BufferedReader in = null;
 		String data = null;
@@ -154,6 +175,40 @@ public class MapPane extends Activity implements LocationListener {
 				}
 			}
 		}
-	}
+	}*/
+	
+	private Handler getSillyGoogleStringHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            //System.out.println("GET ROUTE API RESULT: " + msg.obj);
+            if(msg == null || msg.obj == null){
+				MainActivity.showError(MapPane.this);
+				return;
+			}
+			try {
+				JSONObject object = new JSONObject((String) msg.obj);
+				
+				JSONArray array = object.getJSONArray("routes");
+				
+				JSONObject o_polyLine = array.getJSONObject(array.length()-1).getJSONObject("overview_polyline");
+				String sillyGoogleString = o_polyLine.getString("points");
+				
+				System.out.println(sillyGoogleString);
+				
+
+				if (object.has("status")
+						&& object.get("status").equals("OK")) {
+
+				} else {
+					// TODO there was an error....
+					MainActivity.showError(MapPane.this);
+				}
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	};
 
 }
