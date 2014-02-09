@@ -30,7 +30,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,21 +40,13 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.intrivix.android.busman.network.APITask;
 import com.intrivix.android.busman.screen.MainActivity;
-import com.intrivix.android.busman.screen.MainActivity.HomeFragment;
 
 public class MapPane extends Activity implements LocationListener {
-
-	private static final String LOG_TAG = "BusMan";
-
-	private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/directions";
-	private static final String OUT_JSON = "/json";
-	private static final String API_KEY = "AIzaSyD9QUYAyQd2lOiysKGoqgMPsvKTqAhPDp4";
 
 	private GoogleMap map;
 	private LocationManager locationManager;
 	private static final long MIN_TIME = 400;
 	private static final float MIN_DISTANCE = 1000;
-	private final static String LINE = "m|brFl{~aQo_Hac@qw@hOklFjlJybGtwI{}BtdLmxQph`@}sCbd@utCf~BmnCn}C}_DbhIs~BffIw|ErbI_nJxzKgaFffAwiF~}E}}QpzIywGhsAufMxyHsdNbyS}bIbeG_fAvvAkeE~OioI_iAmoLe^ijLLwyIrf@g_Kd{A_eDdz@oaEkq@etItAmyEjB{w@fz@}{@j{@eEl|Dkl@hnD_iCrb@kqAsbBqb@ewBihCgVkkIxiEo~TkG{_FfNgoCh`BgcGzQmnEznGezDhsFyuF`mEu|Hb~@aoFgCqjFdh@ujFhkEagBxdB{oHzQwePt]onO|aKarTjuKexHxj@ceKj}H{kPzcL{|DnWeoEj_AivEteBcj@l~BsMtvGqFjsBy|AzmBeyDxl@wrGxaH}tKp~O}dDhwHofA|lAi|CzDipDf`FwiHjlJk`\\vO_wp@jDwgy@_LgqIksAahJqx@miJ~i@srGjTkeQe@siG_PecDe_C{fVlCyybAkAkjSmI_oYzd@}oEbj@ycHl}F{vO|hKoyNdaUisH|gLklLpH}lo@|Dsnd@mt@keHitGw~DgyAwiPBo{TaKmcKw_FgjLanIofFi}DwbD}Lm|HoBydHymD{iSsFkea@eFeqm@_V{rIzQe{EucAkwHfD}yHvo@mfUnq@exYFsyFnnBuxEzwDycLz_Iu`TzfF_eQb|F_dHxy@k|E~uC}pHbp@mjCviBy{IqD_{M~mBuuAuz@ssDkDa_^uQcxS|MewB`m@_gDvAckFxa@gxJqCk|Cf}CmrJf|HmvBvCkeCjgC{j]mN_tb@z]iuWmr@ifHi]krFjJkgJhiAapCfR{jCb_BiiFluBobFoQkgDdCmiGjuBwqD~{@elEyD_cC}vAwy@_f@_pAlu@yxG~vAw_MtkGwv@tdAkuRt_CudCp`BmdFvn@u`EfdAqvBsZikCse@u~LarLq_HwlDopBw`B}pCc}C}lFcwEnn@sbCKkyW@qtE_r@}kCi`FPbCyaY`Eif^gk@wb@sbCha@yz@oMoyEgiCqfC}eCfzEieP`C{|_@|j@cqYkk@yh[rd@qnIbm@{{_@bG}p]zlCelFMezG{t@}vUoFqbJyt@mvBgaHguUg}Ac{Je|AuwAs`A}tAyd@e{E_f@yeRlqAojOtu@ayXrc@amDaCayErBooJaO_yIa}AuzGcbBqsD_kBmRa_Aa~@}d@{eDgRepAoa@mHa|@viA~n@~bFep@hdFqVdqMexAbuEk`A~z@{HzgAflA|xDpIf_B}f@t{@y@`P";
 	private String sillyGoogleString = null;
 	
 	private String URL = "http://maps.googleapis.com/maps/api/directions/json";
@@ -64,25 +55,11 @@ public class MapPane extends Activity implements LocationListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
-		JSONObject jObject;
-
-		/*try {
-			
-			System.out.println(getInternetData());
-			//jObject = new JSONObject(theString);
-			//theString = jObject.getJSONObject("points").toString();
-		
-		} catch (IOException e) {
-			System.out.println(e);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 		
 
     	ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
-    	pairs.add(new BasicNameValuePair("origin", "39.833193,-94.862794"));
-    	pairs.add(new BasicNameValuePair("destination", "49.833193,-94.862794"));
+    	pairs.add(new BasicNameValuePair("origin", "London"));
+    	pairs.add(new BasicNameValuePair("destination", "Manchester"));
     	pairs.add(new BasicNameValuePair("sensor", "true"));
     	String getReqAddon = APITask.buildGetParameters(pairs);
     	
@@ -103,13 +80,6 @@ public class MapPane extends Activity implements LocationListener {
 		map.setMyLocationEnabled(true);
 		map.setTrafficEnabled(true);
 		map.setBuildingsEnabled(true);
-
-		//List<LatLng> decodedPath = PolyUtil.decode(theString);
-
-		//map.addPolyline(new PolylineOptions().addAll(decodedPath).color(
-			//	Color.BLUE));
-		// map.addPolyline(new
-		// PolylineOptions().addAll(PolyUtil.decode("{dleI~cvLdAcNYi@MAmA{@}@m@I_@Go@Fe@Py@Pc@^q@xBeEbAkCnE_LzB}Bz@gAnAqBr@cAb@g@`@[dCg@t@Yz@o@`Am@bDeC|BsB\\a@^k@r@_ApAwAl@q@l@aArAaBTOX]jCuCtAaBjJ_MlCaDvAiBFSp@}@J?hBaC^g@`AmArCoDj@q@rHaJdB}BfFqGjC_DhEiFpFaHj@w@^m@~AwCrBwExHsPnD}Ht@{AlDjWr@jFHlEJvAj@nERnBBf@?tADn@bApJ~Au@n@c@nA{@zDaD`@[dAk@rCaAbBw@r@i@fBeCz@sA\\_@\\Sh@UlA_@j@Gt@BxBTtDv@W|D")));
 
 	}
 
@@ -140,44 +110,6 @@ public class MapPane extends Activity implements LocationListener {
 		// TODO Auto-generated method stub
 
 	}
-
-	/*public String getInternetData() throws Exception {
-
-		BufferedReader in = null;
-		String data = null;
-
-		try {
-			HttpClient client = new DefaultHttpClient();
-
-			URI website = new URI(
-					"http://maps.googleapis.com/maps/api/directions/json?origin=39.833193,-94.862794&destination=49.833193,-94.862794&sensor=true");
-			HttpGet request = new HttpGet();
-			request.setURI(website);
-			HttpResponse response = client.execute(request);
-			response.getStatusLine().getStatusCode();
-
-			in = new BufferedReader(new InputStreamReader(response.getEntity()
-					.getContent()));
-			StringBuffer sb = new StringBuffer("");
-			String l = "";
-			String nl = System.getProperty("v.separator");
-			while ((l = in.readLine()) != null) {
-				sb.append(l + nl);
-			}
-			in.close();
-			data = sb.toString();
-			return data;
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-					return data;
-				} catch (Exception e) {
-					Log.e("GetMethodEx", e.getMessage());
-				}
-			}
-		}
-	}*/
 	
 	private Handler getSillyGoogleStringHandler = new Handler() {
         @Override
@@ -195,8 +127,10 @@ public class MapPane extends Activity implements LocationListener {
 				JSONObject o_polyLine = array.getJSONObject(array.length()-1).getJSONObject("overview_polyline");
 				sillyGoogleString = o_polyLine.getString("points");
 				
-				System.out.println(sillyGoogleString);
-				
+				List<LatLng> decodedPath = PolyUtil.decode(sillyGoogleString);
+
+				map.addPolyline(new PolylineOptions().addAll(decodedPath).color(
+						Color.BLUE));
 
 				if (object.has("status")
 						&& object.get("status").equals("OK")) {
