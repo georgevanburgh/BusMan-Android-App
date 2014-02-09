@@ -38,6 +38,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -48,9 +49,14 @@ import android.widget.Toast;
 import com.intrivix.android.busman.MapPane;
 import com.intrivix.android.busman.R;
 import com.intrivix.android.busman.network.APITask;
+
 //
 
 public class MainActivity extends Activity {
+	private class PlacesAutoCompleteAdapter {
+
+	}
+
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -112,10 +118,9 @@ public class MainActivity extends Activity {
 			selectItem(0);
 		}
 		// /fancy auto compleate
-		// AutoCompleteTextView autoCompView = (AutoCompleteTextView)
-		// findViewById(R.id.autocomplete);
-		// autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this,
-		// R.layout.list_item));
+		//AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.activity_main);
+		//autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this,
+			//	R.layout.list_item));
 
 	}
 
