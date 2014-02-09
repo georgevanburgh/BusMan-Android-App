@@ -43,6 +43,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.drive.query.Filter;
+import com.google.android.gms.drive.query.Filters;
 import com.intrivix.android.busman.MapPane;
 import com.intrivix.android.busman.R;
 import com.intrivix.android.busman.network.APITask;
@@ -303,12 +305,56 @@ public class MainActivity extends Activity {
 		AlertDialog dialog = builder.create();
 		dialog.show();
     }
-    
     /*
-     * Auto complete things going down !
-     * 
+     * Crazy auto complete things !!!
      */
-    private static final String LOG_TAG = "BusMan";
+    
+    private class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
+        private ArrayList<String> resultList;
+
+        public PlacesAutoCompleteAdapter(Context context, int textViewResourceId) {
+            super(context, textViewResourceId);
+        }
+
+        @Override
+        public int getCount() {
+            return resultList.size();
+        }
+
+        @Override
+        public String getItem(int index) {
+            return resultList.get(index);
+        }
+
+        @Override
+        public Filter getFilter() {
+            Filter filter = new Filter() {
+                protected Filters performFiltering(CharSequence constraint) {
+                    Filters filterResults = new Filters();
+                    if (constraint != null) {
+                        // Retrieve the autocomplete results.
+                        resultList = autocomplete(constraint.toString());
+
+                        // Assign the data to the FilterResults
+                        filterResults.values = resultList;
+                        filterResults.count = resultList.size();
+                    }
+                    return filterResults;
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+                    if (results != null && results.count > 0) {
+                        notifyDataSetChanged();
+                    }
+                    else {
+                        notifyDataSetInvalidated();
+                    }
+                }};
+            return filter;
+        }
+    }
+    private static final String LOG_TAG = "ExampleApp";
 
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
@@ -365,5 +411,4 @@ public class MainActivity extends Activity {
 
         return resultList;
     }
-
 }
