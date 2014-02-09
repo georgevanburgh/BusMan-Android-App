@@ -36,6 +36,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.intrivix.android.busman.network.APITask;
@@ -58,8 +60,8 @@ public class MapPane extends Activity implements LocationListener {
 		
 
     	ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
-    	pairs.add(new BasicNameValuePair("origin", "London"));
-    	pairs.add(new BasicNameValuePair("destination", "Manchester"));
+    	pairs.add(new BasicNameValuePair("origin", "M14 6GL"));
+    	pairs.add(new BasicNameValuePair("destination", "University Of Manchcester"));
     	pairs.add(new BasicNameValuePair("sensor", "true"));
     	String getReqAddon = APITask.buildGetParameters(pairs);
     	
@@ -80,6 +82,16 @@ public class MapPane extends Activity implements LocationListener {
 		map.setMyLocationEnabled(true);
 		map.setTrafficEnabled(true);
 		map.setBuildingsEnabled(true);
+		
+		 Marker dest = map.addMarker(new MarkerOptions()
+	     .position(new LatLng(53.4670564, -2.2295208))
+	     .title("The University Of Manchester")
+	     .snippet("Uni Wooo !"));
+		 
+		 Marker start = map.addMarker(new MarkerOptions()
+	     .position(new LatLng(53.4401544, -2.2093946))
+	     .title("Student House")
+	     .snippet("Were I live :)"));
 
 	}
 
