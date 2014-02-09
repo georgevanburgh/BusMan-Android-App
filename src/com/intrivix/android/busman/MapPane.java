@@ -59,6 +59,7 @@ public class MapPane extends Activity implements LocationListener {
 	private String theString = null;
 	
 	private String URL = "http://maps.googleapis.com/maps/api/directions/json";
+	private String sillyGoogleString;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -193,9 +194,9 @@ public class MapPane extends Activity implements LocationListener {
 				JSONArray array = object.getJSONArray("routes");
 				
 				JSONObject o_polyLine = array.getJSONObject(array.length()-1).getJSONObject("overview_polyline");
-				String sillyGoogleString = o_polyLine.getString("points");
+				sillyGoogleString = o_polyLine.getString("points");
 				
-				System.out.println(sillyGoogleString);
+				System.out.println("SILLY GOOGLE: " + sillyGoogleString);
 				
 
 				if (object.has("status")
