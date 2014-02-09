@@ -90,7 +90,7 @@ public class MapPane extends Activity implements LocationListener {
 		
 		
 		
-		//System.out.println(theString);
+		System.out.println(theString);
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
 
@@ -101,8 +101,8 @@ public class MapPane extends Activity implements LocationListener {
 		map.setMyLocationEnabled(true);
 		map.setTrafficEnabled(true);
 		map.setBuildingsEnabled(true);
-		
-		//List<LatLng> decodedPath = PolyUtil.decode(sillyGoogleString);
+
+		//List<LatLng> decodedPath = PolyUtil.decode(theString);
 
 		//map.addPolyline(new PolylineOptions().addAll(decodedPath).color(
 			//	Color.BLUE));
@@ -192,7 +192,7 @@ public class MapPane extends Activity implements LocationListener {
 				
 				JSONObject o_polyLine = array.getJSONObject(array.length()-1).getJSONObject("overview_polyline");
 				sillyGoogleString = o_polyLine.getString("points");
-				System.out.println("im near silly gooolge");
+				
 				System.out.println(sillyGoogleString);
 				
 
