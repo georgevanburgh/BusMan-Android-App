@@ -23,6 +23,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -68,6 +71,7 @@ public class MainActivity extends Activity {
 	private int mCurrentFragment = -1;
 
 	ProgressDialog progress;
+	private double lat, lon;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -130,160 +134,182 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// The action bar home/up action should open or close the drawer.
-		// ActionBarDrawerToggle will take care of this.
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
-		// Handle action buttons
-		switch (item.getItemId()) {
-		case R.id.action_settings:
-			// TODO launch the settings activity..
-			/*
-			 * EXAMPLE INTENT TO LAUNCH ACTIVITY Intent intent = new
-			 * Intent(Intent.ACTION_WEB_SEARCH);
-			 * intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-			 * startActivity(intent);
-			 */
-			return true;
-		case R.id.action_map_pane:
-			// For Richard's testing...
-			Intent intent = new Intent(MainActivity.this, MapPane.class);
-			startActivity(intent);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+         // The action bar home/up action should open or close the drawer.
+         // ActionBarDrawerToggle will take care of this.
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        // Handle action buttons
+        switch(item.getItemId()) {
+        case R.id.action_settings:
+            // TODO launch the settings activity..
+            /* EXAMPLE INTENT TO LAUNCH ACTIVITY
+            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+            startActivity(intent);
+            */
+            return true;
+        case R.id.action_map_pane:
+        	//For Richard's testing...
+            Intent intent = new Intent(MainActivity.this, MapPane.class);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    /* The click listner for ListView in the navigation drawer */
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
 
-	/* The click listner for ListView in the navigation drawer */
-	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			selectItem(position);
-		}
-	}
+    private void selectItem(int position) {
+    	if(mCurrentFragment == position) {
+            mDrawerLayout.closeDrawer(mDrawerList);
+    		return;
+    	}
+    	
+    	if(position == 1) {
+            Intent intent = new Intent(MainActivity.this, RouteMap.class);
+            startActivity(intent);
+    		return;
+    	}
+    	
+        // update the main content by replacing fragments
+        Fragment fragment = new HomeFragment();
+        //Bundle args = new Bundle();
+        //args.putInt(HomeFragment.ARG_PLANET_NUMBER, position);
+        //fragment.setArguments(args);
+        
 
-	private void selectItem(int position) {
-		if (mCurrentFragment == position) {
-			mDrawerLayout.closeDrawer(mDrawerList);
-			return;
-		}
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
-		if (position == 1) {
-			Intent intent = new Intent(MainActivity.this, RouteMap.class);
-			startActivity(intent);
-			return;
-		}
+        // update selected item and title, then close the drawer
+        mDrawerList.setItemChecked(position, true);
+        mCurrentFragment = position;
+        mDrawerLayout.closeDrawer(mDrawerList);
+        
+        setupLocationListeners();
+    }
+    
+    private void setupLocationListeners() {
+    	// Acquire a reference to the system Location Manager
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-		// update the main content by replacing fragments
-		Fragment fragment = new HomeFragment();
-		Bundle args = new Bundle();
-		// args.putInt(HomeFragment.ARG_PLANET_NUMBER, position);
-		// fragment.setArguments(args);
+        // Define a listener that responds to location updates
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+            	// Called when a new location is found by the network location provider.
+            	System.out.println("LATITUDE: " + (lat = location.getLatitude()));
+            	System.out.println("LONGITUDE: " + (lon = location.getLongitude()));
+            }
 
-		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment).commit();
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-		// update selected item and title, then close the drawer
-		mDrawerList.setItemChecked(position, true);
-		mCurrentFragment = position;
-		mDrawerLayout.closeDrawer(mDrawerList);
-	}
+            public void onProviderEnabled(String provider) {}
 
-	@Override
-	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getActionBar().setTitle(mTitle);
-	}
+            public void onProviderDisabled(String provider) {}
+          };
 
-	/**
-	 * When using the ActionBarDrawerToggle, you must call it during
-	 * onPostCreate() and onConfigurationChanged()...
-	 */
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+    }
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		// Sync the toggle state after onRestoreInstanceState has occurred.
-		mDrawerToggle.syncState();
-	}
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
+    }
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
-		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
+    /**
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
+     */
 
-	/**
-	 * Fragment that appears in the "content_frame", shows a planet
-	 */
-	public static class HomeFragment extends Fragment {
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
 
-		private Button mNavigateButton;
-		private EditText mToAddress, mFromAddress;
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    
 
-		public HomeFragment() {
-			// Empty constructor required for fragment subclasses
-		}
+    /**
+     * Fragment that appears in the "content_frame", shows a planet
+     */
+    public static class HomeFragment extends Fragment {
 
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_home, container,
-					false);
+        private Button mNavigateButton;
+        private EditText mToAddress, mFromAddress;
+        
+        
+        public HomeFragment(){
+            // Empty constructor required for fragment subclasses
+    	}
 
-			mToAddress = (EditText) rootView.findViewById(R.id.toAddress);
-			mFromAddress = (EditText) rootView.findViewById(R.id.fromAddress);
-
-			mNavigateButton = (Button) rootView
-					.findViewById(R.id.navigateButton);
-			mNavigateButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					// For now, just create a Toast message with the input data
-					// TODO to send an API request to do the navigation...
-
-					String toAddress = mToAddress.getText().toString();
-					String fromAddress = mFromAddress.getText().toString();
-					if (fromAddress.isEmpty()) {
-						// TODO grab the device's current location...
-					}
-
-					Toast.makeText(
-							HomeFragment.this.getActivity(),
-							"To Address: " + toAddress + ", From Address: "
-									+ fromAddress, Toast.LENGTH_SHORT).show();
-
-					ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
-					pairs.add(new BasicNameValuePair("start", "m144aq"));
-					pairs.add(new BasicNameValuePair("dest", "m145rl"));
-					String getReqAddon = APITask.buildGetParameters(pairs);
-
-					APITask.callApi(
-							APITask.GET_ROUTE_URL + getReqAddon,
-							"",
-							APITask.REQUEST_GET,
-							((MainActivity) HomeFragment.this.getActivity()).getRouteResultHandler);
-				}
-			});
-
-			return rootView;
-		}
-	}
-
-	private Handler getRouteResultHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			System.out.println("GET ROUTE API RESULT: " + msg.obj);
-			if (msg == null || msg.obj == null) {
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+            
+            mToAddress = (EditText) rootView.findViewById(R.id.toAddress);
+            mFromAddress = (EditText) rootView.findViewById(R.id.fromAddress);
+            
+            mNavigateButton = (Button) rootView.findViewById(R.id.navigateButton);
+            mNavigateButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                	//For now, just create a Toast message with the input data
+                	//TODO to send an API request to do the navigation...
+                	
+                	String toAddress = mToAddress.getText().toString();
+                	String fromAddress = mFromAddress.getText().toString();
+                	if(fromAddress.isEmpty()) {
+                		//TODO grab the device's current location...
+                	}
+                	
+                	Toast.makeText(HomeFragment.this.getActivity(),
+                					"To Address: " + toAddress
+                					+ ", From Address: " + fromAddress,
+                					Toast.LENGTH_SHORT).show();
+                	
+                	ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+                	pairs.add(new BasicNameValuePair("start", "m144aq"));
+                	pairs.add(new BasicNameValuePair("dest", "m145rl"));
+                	String getReqAddon = APITask.buildGetParameters(pairs);
+                	
+					APITask.callApi(APITask.GET_ROUTE_URL+getReqAddon, "", APITask.REQUEST_GET,
+								((MainActivity) HomeFragment.this.getActivity()).getRouteResultHandler);
+            	}
+            });
+            
+            
+            return rootView;
+        }
+    }
+    
+    private Handler getRouteResultHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            System.out.println("GET ROUTE API RESULT: " + msg.obj);
+            if(msg == null || msg.obj == null){
 				MainActivity.showError(MainActivity.this);
 				if (progress != null)
 					progress.dismiss();
