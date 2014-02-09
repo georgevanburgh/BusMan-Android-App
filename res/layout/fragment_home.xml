@@ -4,44 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/logoImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/logo_margin"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/google_android_sdk" />
-    
-    <EditText
-        android:id="@+id/fromAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/logoImage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="@string/from_address"
-        android:ems="10"
-        android:inputType="textPostalAddress" >
-    </EditText>
-    
-    <EditText
-        android:id="@+id/toAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/fromAddress"
-        android:layout_alignRight="@+id/fromAddress"
-        android:layout_below="@+id/fromAddress"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="@string/to_address"
-        android:inputType="textPostalAddress" >
-
-    </EditText>
-
     <Button
         android:id="@+id/navigateButton"
         android:layout_width="wrap_content"
@@ -52,5 +14,39 @@
         android:layout_marginTop="50dp"
         android:minWidth="150dp"
         android:text="@string/go_button" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo_big" />
+
+    <EditText
+        android:id="@+id/fromAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/from_address"
+        android:inputType="textPostalAddress" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/toAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/fromAddress"
+        android:layout_marginTop="26dp"
+        android:ems="10"
+        android:hint="@string/to_address"
+        android:inputType="textPostalAddress" />
 
 </RelativeLayout>
