@@ -56,8 +56,8 @@ public class RouteOptionsAdapter extends BaseAdapter {
 		TextView name = (TextView) convertView.findViewById(R.id.route_name);
 		name.setText(thisRoute.getRouteName());
 
-		TextView price = (TextView) convertView.findViewById(R.id.price_text);
-		price.setText(thisRoute.getPrice() < 0 ? "" : getPriceFormat(thisRoute.getPrice()));
+		/*TextView price = (TextView) convertView.findViewById(R.id.price_text);
+		price.setText(thisRoute.getPrice() < 0 ? "" : getPriceFormat(thisRoute.getPrice()));*/
 		
 		TextView eta = (TextView) convertView.findViewById(R.id.eta_text);
 		eta.setText(getETAString(thisRoute.getETA()));

@@ -71,6 +71,7 @@ public class MainActivity extends Activity {
 	private int mCurrentFragment = -1;
 
 	ProgressDialog progress;
+	private double lat, lon;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -208,15 +209,8 @@ public class MainActivity extends Activity {
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
             	// Called when a new location is found by the network location provider.
-            	/*
-            	if(System.currentTimeMillis() - timeLastUpdated > UPDATE_INTERVAL) {
-            		if(lastUpdatedProviderType.equals(location.getProvider())
-            				|| location.getProvider().equals(LocationManager.GPS_PROVIDER)
-            				|| System.currentTimeMillis() - timeLastUpdated > MAX_UPDATE_INTERVAL)
-            		updateEstimatedLocation(location);
-            		timeLastUpdated = System.currentTimeMillis();
-            		lastUpdatedProviderType = location.getProvider();
-            	}*/
+            	System.out.println("LATITUDE: " + (lat = location.getLatitude()));
+            	System.out.println("LONGITUDE: " + (lon = location.getLongitude()));
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {}
