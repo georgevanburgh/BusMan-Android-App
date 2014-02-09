@@ -15,7 +15,7 @@
         android:src="@drawable/google_android_sdk" />
     
     <EditText
-        android:id="@+id/toAddress"
+        android:id="@+id/fromAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logoImage"
@@ -23,21 +23,21 @@
         android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="@string/to_address"
+        android:hint="@string/from_address"
         android:ems="10"
         android:inputType="textPostalAddress" >
     </EditText>
     
     <EditText
-        android:id="@+id/fromAddress"
+        android:id="@+id/toAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/toAddress"
-        android:layout_alignRight="@+id/toAddress"
-        android:layout_below="@+id/toAddress"
+        android:layout_alignLeft="@+id/fromAddress"
+        android:layout_alignRight="@+id/fromAddress"
+        android:layout_below="@+id/fromAddress"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="@string/from_address"
+        android:hint="@string/to_address"
         android:inputType="textPostalAddress" >
 
     </EditText>
@@ -46,9 +46,9 @@
         android:id="@+id/navigateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/fromAddress"
-        android:layout_alignRight="@+id/fromAddress"
-        android:layout_below="@+id/fromAddress"
+        android:layout_alignLeft="@+id/toAddress"
+        android:layout_alignRight="@+id/toAddress"
+        android:layout_below="@+id/toAddress"
         android:layout_marginTop="50dp"
         android:minWidth="150dp"
         android:text="@string/go_button" />

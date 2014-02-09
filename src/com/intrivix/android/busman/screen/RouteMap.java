@@ -38,6 +38,8 @@ public class RouteMap extends Activity implements LocationListener  {
 	private LocationManager locationManager;
 	private static final long MIN_TIME = 400;
 	private static final float MIN_DISTANCE = 1000;
+	
+	private int selectedItem = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +80,10 @@ public class RouteMap extends Activity implements LocationListener  {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
             	//TODO do something special when this item is clicked...
-            	//mRouteOptionsListView.setSelection(pos);
+            	selectedItem = pos;
             }
         });
+        
 		
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
