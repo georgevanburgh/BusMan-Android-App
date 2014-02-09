@@ -34,7 +34,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDonWhaAl-thasoKPqspRbWri3JBwpy0GU" />
+            android:value="AIzaSyD9QUYAyQd2lOiysKGoqgMPsvKTqAhPDp4" />
 
         <activity
             android:name="com.intrivix.android.busman.screen.MainActivity"
