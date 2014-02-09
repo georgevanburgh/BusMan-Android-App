@@ -90,7 +90,7 @@ public class MapPane extends Activity implements LocationListener {
 		
 		
 		
-		System.out.println(theString);
+		//System.out.println(theString);
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
 
